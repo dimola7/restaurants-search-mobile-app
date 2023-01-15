@@ -1,11 +1,11 @@
-import { StyleSheet, Text, View, ScrollView } from "react-native";
+import { StyleSheet, Text, ScrollView } from "react-native";
 import React, { useState } from "react";
 import SearchBar from "../components/SearchBar";
 import { useSearchResults } from "../hooks";
 import ResultsList from "../components/ResultsList";
 import { CATEGORIES } from "../components/constants";
 
-const SearchScreen = () => {
+const SearchScreen = ({navigation}: any) => {
   const [term, setTerm] = useState("");
   const { searchApi, results, errorMessage, filterResultsByPrice } =
     useSearchResults();
@@ -25,6 +25,7 @@ const SearchScreen = () => {
             key={index}
             title={category.title}
             results={filterResultsByPrice(category.price)}
+            navigation={navigation}
           />
         ))}
       </ScrollView>
