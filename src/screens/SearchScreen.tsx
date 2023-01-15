@@ -1,22 +1,34 @@
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, Text, View, ScrollView } from "react-native";
 import React, { useState } from "react";
 import SearchBar from "../components/SearchBar";
 import { useSearchResults } from "../hooks";
+import ResultsList from "../components/ResultsList";
+import { CATEGORIES } from "../components/constants";
 
 const SearchScreen = () => {
   const [term, setTerm] = useState("");
-  const { searchApi, results, errorMessage } = useSearchResults();
+  const { searchApi, results, errorMessage, filterResultsByPrice } =
+    useSearchResults();
 
   return (
-    <View>
+    <>
       <SearchBar
         term={term}
         onTermChange={(newTerm: string) => setTerm(newTerm)}
         onTermSubmit={() => searchApi(term)}
       />
       {errorMessage && <Text>{errorMessage}</Text>}
-      <Text>We have found {results.length} results</Text>
-    </View>
+      {/* <Text>We have found {results.length} results</Text> */}
+      <ScrollView>
+        {CATEGORIES?.map((category, index) => (
+          <ResultsList
+            key={index}
+            title={category.title}
+            results={filterResultsByPrice(category.price)}
+          />
+        ))}
+      </ScrollView>
+    </>
   );
 };
 

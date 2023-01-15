@@ -2,9 +2,10 @@ import { useState, useEffect } from "react";
 import yelp from "../api/yelp";
 
 export const useSearchResults = () => {
-  const [results, setResults] = useState([]);
+  const [results, setResults] = useState<any[]>([]);
   const [errorMessage, setErrorMessage] = useState("");
 
+  // search function
   const searchApi = async (searchTerm: string) => {
     try {
       const { data } = await yelp.get("/search", {
@@ -20,6 +21,13 @@ export const useSearchResults = () => {
     }
   };
 
+  // filter categories
+  const filterResultsByPrice = (price: string) => {
+    return results?.filter(results => {
+      return results.price === price
+    })
+  }
+
   useEffect(() => {
     searchApi("pasta");
   }, []);
@@ -28,5 +36,6 @@ export const useSearchResults = () => {
     searchApi,
     results,
     errorMessage,
+    filterResultsByPrice,
   };
 };
